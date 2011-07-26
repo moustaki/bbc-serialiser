@@ -124,6 +124,9 @@ class BBC_Serialiser_EasyRdfSerialiser implements BBC_Serialiser_Interface
                 $this->_graph->addResource($uri, $key, $value->getUri());
             } elseif (get_class($value) == 'Zend_Date') {
                 $this->_graph->add($uri, $key, array('type' => 'literal', 'datatype' => 'xsd:dateTime', 'value' => $value->get(Zend_Date::ISO_8601)));
+            } elseif (get_class($value) == 'Zend_Measure_Time') {
+                $value->setType('SECOND');
+                $this->_graph->add($uri, $key, array('type' => 'literal', 'datatype' => 'xsd:duration', 'value' => 'PT' . $value->getValue() . 'S'));
             } elseif (get_class($value) == 'stdClass') {
                 foreach (get_object_vars($value) as $k => $v) {
                     $this->_processProperty($stop_at_next, $stop, $use_urimap, $urimap, $uri, $key, $v);

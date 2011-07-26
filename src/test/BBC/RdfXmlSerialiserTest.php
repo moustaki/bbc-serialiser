@@ -123,6 +123,22 @@ class RdfXmlSerialiserTest extends RdfSerialiserTestCase
         $this->assertEquals('xsd:dateTime', $this->_graph->resource('http://example.com')->get('po:property')->getDatatype());
     }
 
+    public function testLiteralDurationRdfXmlSerialisation()
+    {
+        $duration = new Zend_Measure_Time(60, Zend_Measure_Time::MINUTE);
+        $this->_object->setFeedMapping(array(
+            'urimap' => array(
+                'this' => 'http://example.com',
+            ),
+            'po:property' => $duration,
+        ));
+        $rdf = $this->_serialiser->serialise($this->_object);
+        $this->assertTriples($rdf, array(
+            array('http://example.com', 'po:property', 'PT3600S'),
+        ));
+        $this->assertEquals('xsd:duration', $this->_graph->resource('http://example.com')->get('po:property')->getDatatype());
+    }
+
     public function testUriMapRdfXmlSerialisation()
     {
         $this->_object->setFeedMapping(array(
