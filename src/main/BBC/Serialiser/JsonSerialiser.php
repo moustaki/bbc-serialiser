@@ -95,7 +95,7 @@ class BBC_Serialiser_JsonSerialiser implements BBC_Serialiser_Interface
                 $data[$key] = $v;
             } elseif (!$stop && $value instanceof BBC_Serialiser_Serialisable) {
                 $obj = $this->_writeJsonResource($value, $stop_at_next);
-                $data = array_merge($data, array($key => $obj));
+                if (!empty($obj)) $data = array_merge($data, array($key => $obj));
             }
         } elseif ($value !== '' && $value !== null) {
             $data[$key] = $value;

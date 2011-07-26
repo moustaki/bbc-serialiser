@@ -63,6 +63,18 @@ class JsonSerialiserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('{"property":"value"}', $json);
     }
 
+    public function testEmptyObjectJsonSerialisation()
+    {
+        $otherObject = new MockModel();
+        $otherObject->setFeedMapping(array());
+        $this->_object->setFeedMapping(array(
+            'po:property' => $otherObject,
+            'foo' => 'bar',
+        ));
+        $json = $this->_serialiser->serialise($this->_object);
+        $this->assertEquals('{"foo":"bar"}', $json);
+    }
+
     public function testLiteralDateJsonSerialisation()
     {
         $date = new Zend_Date('2010-08-07T12:00:00Z', Zend_date::ISO_8601);
